@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    	<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-T4CLD9RDMG"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-T4CLD9RDMG');
+		</script>
+	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urdu Font</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
-
-	<style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -23,7 +31,8 @@
             margin-bottom: 10px;
             font-size: 16px;
             padding: 10px;
-            direction: rtl; /* Set text direction to right-to-left */
+            direction: rtl; 
+            font-family: 'Noto Nastaliq Urdu', serif; 
         }
         button {
             font-size: 16px;
@@ -41,23 +50,12 @@
             display: none;
         }
     </style>
-	
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-T4CLD9RDMG"></script>
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-
-		  gtag('config', 'G-T4CLD9RDMG');
-		</script>
-	
 </head>
 <body>
     <div class="container">
         <h2>Urdu Font</h2>
         <div id="inputContainer">
-            <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+            <textarea id="inputText" placeholder="یہاں متن درج کریں"></textarea>
             <br>
             <button onclick="convertText()">Submit</button>
         </div>
