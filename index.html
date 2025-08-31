@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-			<!-- Google tag (gtag.js) -->
-			<script async src="https://www.googletagmanager.com/gtag/js?id=G-VR8VH5T2XQ"></script>
-			<script>
-			  window.dataLayer = window.dataLayer || [];
-			  function gtag(){dataLayer.push(arguments);}
-			  gtag('js', new Date());
-			
-			  gtag('config', 'G-VR8VH5T2XQ');
-			</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VR8VH5T2XQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-VR8VH5T2XQ');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Urdu Text Editor</title>
@@ -22,67 +22,87 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* A slightly softer gray */
         }
         .urdu-text, .urdu-input {
             font-family: 'Noto Nastaliq Urdu', serif;
             direction: rtl;
         }
+        /* Custom focus ring for better visibility */
+        .focus-visible\:ring-blue-500:focus-visible {
+            --tw-ring-color: #3b82f6;
+        }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-2xl mx-auto p-4">
+    <div class="w-full max-w-2xl mx-auto">
         <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div class="p-6 border-b border-gray-200">
-                <h1 class="text-2xl font-bold text-gray-800 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h1>
+            <div class="p-4 sm:p-6 border-b border-gray-200">
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h1>
                 <p class="text-gray-500 text-center mt-1">Urdu Text Editor</p>
             </div>
 
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 <div id="editor-container">
                     <textarea id="urduInput" class="urdu-input w-full h-48 p-4 bg-gray-50 rounded-lg border-2 border-transparent focus:border-blue-500 focus:ring-0 outline-none transition-all resize-none text-xl" placeholder="یہاں متن درج کریں..."></textarea>
+                    <!-- Character and Word Counter -->
+                    <div id="text-stats" class="flex justify-end text-sm text-gray-500 mt-2 pr-1 urdu-text">
+                        <span>الفاظ: 0</span>
+                        <span class="mx-2">|</span>
+                        <span>حروف: 0</span>
+                    </div>
                 </div>
                 <div id="viewer-container" class="hidden">
                     <div id="lockedText" class="urdu-text w-full h-48 p-4 bg-gray-50 rounded-lg text-xl overflow-y-auto"></div>
                 </div>
             </div>
 
-            <div class="p-6 bg-gray-50 flex justify-center items-center space-x-4 rounded-b-2xl">
+            <div class="p-4 sm:p-6 bg-gray-50 flex justify-center items-center space-x-2 sm:space-x-4 space-x-reverse rounded-b-2xl">
                 <button id="toggleLockBtn" title="Lock/Edit" class="h-12 w-12 flex items-center justify-center bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all transform hover:scale-105">
-                    <div id="lockIconWrapper">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    </div>
-                     <div id="editIconWrapper" class="hidden">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"></path></svg>
-                    </div>
+                    <i data-lucide="lock" id="lockIcon"></i>
+                    <i data-lucide="pencil" id="editIcon" class="hidden"></i>
                 </button>
                 <button id="copyBtn" title="Copy Text" class="h-12 w-12 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all transform hover:scale-105 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:transform-none" disabled>
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <i data-lucide="copy"></i>
                 </button>
                 <button id="printBtn" title="Save as PDF" class="h-12 w-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 transition-all transform hover:scale-105 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:transform-none" disabled>
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                     <i data-lucide="printer"></i>
                 </button>
             </div>
-            <div id="copy-feedback" class="text-center text-sm text-green-600 p-2 h-8"></div>
+            <!-- Animated Feedback Message -->
+            <div id="copy-feedback" class="text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-0"></div>
         </div>
     </div>
 
     <script>
+        // DOM Elements
         const urduInput = document.getElementById('urduInput');
         const lockedText = document.getElementById('lockedText');
         const editorContainer = document.getElementById('editor-container');
         const viewerContainer = document.getElementById('viewer-container');
         
         const toggleLockBtn = document.getElementById('toggleLockBtn');
-        const lockIcon = document.getElementById('lockIconWrapper');
-        const editIcon = document.getElementById('editIconWrapper');
+        const lockIcon = document.getElementById('lockIcon');
+        const editIcon = document.getElementById('editIcon');
         
         const copyBtn = document.getElementById('copyBtn');
         const printBtn = document.getElementById('printBtn');
         const copyFeedback = document.getElementById('copy-feedback');
+        const textStats = document.getElementById('text-stats');
 
         let isLocked = false;
 
+        // Update word and character count on input
+        urduInput.addEventListener('input', () => {
+            const text = urduInput.value;
+            const chars = text.length;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            
+            textStats.innerHTML = `<span>الفاظ: ${words}</span><span class="mx-2">|</span><span>حروف: ${chars}</span>`;
+        });
+
+        // Toggle between editing and locked view
         toggleLockBtn.addEventListener('click', () => {
             isLocked = !isLocked;
             const currentText = urduInput.value;
@@ -98,14 +118,9 @@
                 toggleLockBtn.setAttribute('title', 'Edit');
 
                 // Enable copy and print buttons if there is text
-                if (currentText.trim() !== '') {
-                    copyBtn.disabled = false;
-                    printBtn.disabled = false;
-                } else {
-                    copyBtn.disabled = true;
-                    printBtn.disabled = true;
-                }
-
+                const hasText = currentText.trim() !== '';
+                copyBtn.disabled = !hasText;
+                printBtn.disabled = !hasText;
             } else {
                 // Unlock for editing
                 editorContainer.classList.remove('hidden');
@@ -120,44 +135,61 @@
                 printBtn.disabled = true;
             }
         });
+        
+        // --- Utility Functions ---
+
+        // Shows a feedback message that fades out
+        function showFeedback(message, isError = false) {
+            copyFeedback.textContent = message;
+            copyFeedback.className = `text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-100 ${isError ? 'text-red-600' : 'text-green-600'}`;
+            
+            setTimeout(() => {
+                copyFeedback.classList.replace('opacity-100', 'opacity-0');
+            }, 2000);
+        }
+
+        // --- Button Event Listeners ---
 
         copyBtn.addEventListener('click', () => {
             if (!isLocked || !lockedText.innerText) return;
             
-            // Create a temporary textarea to copy from
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = lockedText.innerText;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            
-            try {
-                document.execCommand('copy');
-                copyFeedback.textContent = 'متن کاپی ہو گیا!';
-                setTimeout(() => {
-                    copyFeedback.textContent = '';
-                }, 2000);
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
-                copyFeedback.textContent = 'کاپی کرنے میں ناکامی!';
-                 setTimeout(() => {
-                    copyFeedback.textContent = '';
-                }, 2000);
+            // Modern clipboard API with fallback
+            if (navigator.clipboard) {
+                 navigator.clipboard.writeText(lockedText.innerText).then(() => {
+                    showFeedback('متن کاپی ہو گیا!');
+                }).catch(err => {
+                    console.error('Failed to copy text with modern API: ', err);
+                    showFeedback('کاپی کرنے میں ناکامی!', true);
+                });
+            } else {
+                 // Fallback for older browsers
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = lockedText.innerText;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                try {
+                    document.execCommand('copy');
+                    showFeedback('متن کاپی ہو گیا!');
+                } catch (err) {
+                    console.error('Failed to copy text with fallback: ', err);
+                    showFeedback('کاپی کرنے میں ناکامی!', true);
+                }
+                document.body.removeChild(tempTextArea);
             }
-            
-            document.body.removeChild(tempTextArea);
         });
 
         printBtn.addEventListener('click', () => {
             if (!isLocked || !lockedText.innerText) return;
 
             const element = document.createElement('div');
-            element.innerHTML = `<div style="font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; padding: 40px; font-size: 20px;">${lockedText.innerHTML.replace(/\n/g, '<br>')}</div>`;
+            // Preserve line breaks for the PDF output
+            element.innerHTML = `<div style="font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; padding: 40px; font-size: 20px; white-space: pre-wrap; word-wrap: break-word;">${lockedText.innerText}</div>`;
             
             const opt = {
                 margin:       1,
                 filename:     'urdu-text.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
+                html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
@@ -170,5 +202,4 @@
 
 </body>
 </html>
-
 
