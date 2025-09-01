@@ -55,31 +55,31 @@
         }
     </style>
 </head>
-<body class="flex items-start sm:items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-zinc-950 overflow-hidden">
+<body class="h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gray-100 dark:bg-zinc-950 overflow-hidden">
 
-    <div class="w-full max-w-2xl mx-auto h-[calc(var(--vh,1vh)*95)] sm:h-auto sm:max-h-[90vh]">
-        <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-lg overflow-hidden h-full flex flex-col">
-            <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-zinc-800 flex-shrink-0">
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h1>
-                <p class="text-gray-500 dark:text-gray-400 text-center mt-2">Urdu Text Editor</p>
-            </div>
+    <div class="w-full max-w-4xl mx-auto h-full flex flex-col bg-white dark:bg-zinc-900 rounded-2xl shadow-lg overflow-hidden">
+        <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-zinc-800 flex-shrink-0">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h1>
+            <p class="text-gray-500 dark:text-gray-400 text-center mt-2">Urdu Text Editor</p>
+        </div>
 
-            <div class="p-4 sm:p-6 flex-grow min-h-0">
-                <div id="editor-container" class="h-full flex flex-col">
-                    <textarea id="urduInput" class="urdu-input w-full p-4 bg-gray-50 dark:bg-zinc-800 dark:text-gray-200 dark:placeholder-gray-400 rounded-lg border-2 border-transparent focus:border-blue-500 focus:ring-0 outline-none resize-none text-xl flex-grow" placeholder="یہاں لکھیں..."></textarea>
-                    <!-- Character and Word Counter -->
-                    <div id="text-stats" class="flex justify-end text-sm text-gray-500 dark:text-gray-400 mt-2 pr-1 urdu-text flex-shrink-0">
-                        <span>الفاظ: 0</span>
-                        <span class="mx-2">|</span>
-                        <span>حروف: 0</span>
-                    </div>
-                </div>
-                <div id="viewer-container" class="hidden h-full">
-                    <div id="lockedText" class="urdu-text w-full h-full p-4 bg-gray-50 dark:bg-zinc-800 dark:text-gray-200 rounded-lg text-xl overflow-y-auto"></div>
+        <div class="flex-grow min-h-0 relative">
+            <div id="editor-container" class="absolute inset-0 flex flex-col p-4 sm:p-6">
+                <textarea id="urduInput" class="urdu-input w-full bg-gray-50 dark:bg-zinc-800 dark:text-gray-200 dark:placeholder-gray-400 rounded-lg border-2 border-transparent focus:border-blue-500 focus:ring-0 outline-none resize-none text-xl flex-grow p-4"></textarea>
+                <!-- Character and Word Counter -->
+                <div id="text-stats" class="flex justify-end text-sm text-gray-500 dark:text-gray-400 mt-2 pr-1 urdu-text flex-shrink-0">
+                    <span>الفاظ: 0</span>
+                    <span class="mx-2">|</span>
+                    <span>حروف: 0</span>
                 </div>
             </div>
+            <div id="viewer-container" class="hidden absolute inset-0 flex flex-col p-4 sm:p-6">
+                <div id="lockedText" class="urdu-text w-full h-full bg-gray-50 dark:bg-zinc-800 dark:text-gray-200 rounded-lg text-xl overflow-y-auto p-4"></div>
+            </div>
+        </div>
 
-            <div class="p-4 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 flex justify-center items-center gap-2 rounded-b-2xl flex-shrink-0">
+        <div class="p-4 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 flex flex-col justify-center items-center gap-2 rounded-b-2xl flex-shrink-0">
+            <div class="flex justify-center items-center gap-2">
                 <button id="toggleLockBtn" title="Lock/Edit" class="h-10 w-10 flex items-center justify-center bg-rose-200 text-rose-800 rounded-full hover:bg-rose-300 focus:outline-none focus:ring-4 focus:ring-rose-100 transition-all transform hover:scale-105">
                     <i data-lucide="lock" id="lockIcon"></i>
                     <i data-lucide="pencil" id="editIcon" class="hidden"></i>
@@ -105,7 +105,7 @@
                 </button>
             </div>
             <!-- Animated Feedback Message -->
-            <div id="feedback-message" class="text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-0"></div>
+            <div id="feedback-message" class="text-center text-sm transition-opacity duration-300 opacity-0 h-6 pt-1"></div>
         </div>
     </div>
 
@@ -212,7 +212,7 @@
 
         function showFeedback(message, isError = false) {
             feedbackMessage.textContent = message;
-            feedbackMessage.className = `text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-100 ${isError ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`;
+            feedbackMessage.className = `text-center text-sm transition-opacity duration-300 opacity-100 h-6 pt-1 ${isError ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`;
             
             setTimeout(() => {
                 feedbackMessage.classList.replace('opacity-100', 'opacity-0');
@@ -226,13 +226,13 @@
             
             // Use modern clipboard API if available
             if (navigator.clipboard) {
-                 navigator.clipboard.writeText(lockedText.innerText).then(() => {
-                     showFeedback('متن کاپی ہو گیا!');
-                 }).catch(err => {
-                     console.error('Failed to copy text with modern API: ', err);
-                     // Fallback for iFrame restrictions
-                     fallbackCopy();
-                 });
+                navigator.clipboard.writeText(lockedText.innerText).then(() => {
+                    showFeedback('متن کاپی ہو گیا!');
+                }).catch(err => {
+                    console.error('Failed to copy text with modern API: ', err);
+                    // Fallback for iFrame restrictions
+                    fallbackCopy();
+                });
             } else {
                 fallbackCopy();
             }
@@ -261,11 +261,11 @@
             element.innerHTML = `<div style="font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; padding: 40px; font-size: 20px; white-space: pre-wrap; word-wrap: break-word;">${lockedText.innerText}</div>`;
             
             const opt = {
-                margin:       1,
-                filename:     'urdu-text.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                margin:      1,
+                filename:    'urdu-text.pdf',
+                image:       { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF:       { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
             showFeedback('پی ڈی ایف تیار کی جا رہی ہے...');
@@ -352,8 +352,5 @@
             lucide.createIcons();
         })();
     </script>
-
 </body>
 </html>
-
-
