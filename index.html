@@ -45,7 +45,7 @@
 </head>
 <body class="flex items-start sm:items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
 
-    <div class="w-full max-w-2xl mx-auto h-[90vh] sm:h-auto sm:max-h-[90vh]">
+    <div class="w-full max-w-2xl mx-auto h-[calc(var(--vh,1vh)*95)] sm:h-auto sm:max-h-[90vh]">
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden h-full flex flex-col">
             <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
                 <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h1>
@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <div class="p-4 sm:p-6 bg-gray-50 dark:bg-gray-700 flex justify-center items-center space-x-2 sm:space-x-4 space-x-reverse rounded-b-2xl flex-shrink-0">
+            <div class="p-4 sm:p-6 bg-gray-50 dark:bg-gray-700 flex justify-center items-center gap-2 sm:gap-4 rounded-b-2xl flex-shrink-0">
                  <button id="saveBtn" title="Save Text" class="h-12 w-12 flex items-center justify-center bg-purple-500 text-white rounded-full hover:bg-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all transform hover:scale-105">
                     <i data-lucide="save"></i>
                 </button>
@@ -241,6 +241,13 @@
 
         // --- Initialize page ---
         (() => {
+            // Set dynamic viewport height to handle mobile keyboard
+            const setVh = () => {
+                document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+            };
+            window.addEventListener('resize', setVh);
+            setVh(); // Set initial value
+
             // Check for saved theme
             const savedMode = localStorage.getItem('darkMode');
             if (savedMode !== null) {
@@ -266,6 +273,5 @@
 
 </body>
 </html>
-
 
 
