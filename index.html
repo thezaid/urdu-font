@@ -17,12 +17,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind CSS for class-based dark mode
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* A slightly softer gray */
         }
         .urdu-text, .urdu-input {
             font-family: 'Noto Nastaliq Urdu', serif;
@@ -32,34 +37,44 @@
         .focus-visible\:ring-blue-500:focus-visible {
             --tw-ring-color: #3b82f6;
         }
+        /* Smooth transition for color changes */
+        body, .bg-white, .bg-gray-50, .urdu-input, h1, p {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex items-start sm:items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
 
     <div class="w-full max-w-2xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div class="p-4 sm:p-6 border-b border-gray-200">
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h1>
-                <p></p>
-                <p class="text-gray-500 text-center mt-1">Urdu Text Editor</p>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h1>
+                <p class="text-gray-500 dark:text-gray-400 text-center mt-2">Urdu Text Editor</p>
             </div>
 
             <div class="p-4 sm:p-6">
                 <div id="editor-container">
-                    <textarea id="urduInput" class="urdu-input w-full h-48 p-4 bg-gray-50 rounded-lg border-2 border-transparent focus:border-blue-500 focus:ring-0 outline-none transition-all resize-none text-xl" placeholder="یہاں متن درج کریں..."></textarea>
+                    <textarea id="urduInput" class="urdu-input w-full h-48 p-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 rounded-lg border-2 border-transparent focus:border-blue-500 focus:ring-0 outline-none resize-none text-xl" placeholder="یہاں متن درج کریں..."></textarea>
                     <!-- Character and Word Counter -->
-                    <div id="text-stats" class="flex justify-end text-sm text-gray-500 mt-2 pr-1 urdu-text">
+                    <div id="text-stats" class="flex justify-end text-sm text-gray-500 dark:text-gray-400 mt-2 pr-1 urdu-text">
                         <span>الفاظ: 0</span>
                         <span class="mx-2">|</span>
                         <span>حروف: 0</span>
                     </div>
                 </div>
                 <div id="viewer-container" class="hidden">
-                    <div id="lockedText" class="urdu-text w-full h-48 p-4 bg-gray-50 rounded-lg text-xl overflow-y-auto"></div>
+                    <div id="lockedText" class="urdu-text w-full h-48 p-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-200 rounded-lg text-xl overflow-y-auto"></div>
                 </div>
             </div>
 
-            <div class="p-4 sm:p-6 bg-gray-50 flex justify-center items-center space-x-2 sm:space-x-4 space-x-reverse rounded-b-2xl">
+            <div class="p-4 sm:p-6 bg-gray-50 dark:bg-gray-700 flex justify-center items-center space-x-2 sm:space-x-4 space-x-reverse rounded-b-2xl">
+                 <button id="saveBtn" title="Save Text" class="h-12 w-12 flex items-center justify-center bg-purple-500 text-white rounded-full hover:bg-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all transform hover:scale-105">
+                    <i data-lucide="save"></i>
+                </button>
+                <button id="darkModeToggle" title="Toggle Dark Mode" class="h-12 w-12 flex items-center justify-center bg-gray-600 dark:bg-gray-600 text-white rounded-full hover:bg-gray-700 dark:hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-400 dark:focus:ring-gray-500 transition-all transform hover:scale-105">
+                    <i data-lucide="moon" id="moonIcon"></i>
+                    <i data-lucide="sun" id="sunIcon" class="hidden"></i>
+                </button>
                 <button id="toggleLockBtn" title="Lock/Edit" class="h-12 w-12 flex items-center justify-center bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all transform hover:scale-105">
                     <i data-lucide="lock" id="lockIcon"></i>
                     <i data-lucide="pencil" id="editIcon" class="hidden"></i>
@@ -89,8 +104,14 @@
         
         const copyBtn = document.getElementById('copyBtn');
         const printBtn = document.getElementById('printBtn');
+        const saveBtn = document.getElementById('saveBtn');
         const copyFeedback = document.getElementById('copy-feedback');
         const textStats = document.getElementById('text-stats');
+        
+        const htmlElement = document.documentElement;
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const moonIcon = document.getElementById('moonIcon');
+        const sunIcon = document.getElementById('sunIcon');
 
         let isLocked = false;
 
@@ -151,10 +172,14 @@
 
         // --- Button Event Listeners ---
 
+        saveBtn.addEventListener('click', () => {
+            localStorage.setItem('urduEditorText', urduInput.value);
+            showFeedback('متن محفوظ ہو گیا!'); // Text Saved!
+        });
+
         copyBtn.addEventListener('click', () => {
             if (!isLocked || !lockedText.innerText) return;
             
-            // Modern clipboard API with fallback
             if (navigator.clipboard) {
                  navigator.clipboard.writeText(lockedText.innerText).then(() => {
                     showFeedback('متن کاپی ہو گیا!');
@@ -163,7 +188,6 @@
                     showFeedback('کاپی کرنے میں ناکامی!', true);
                 });
             } else {
-                 // Fallback for older browsers
                 const tempTextArea = document.createElement('textarea');
                 tempTextArea.value = lockedText.innerText;
                 document.body.appendChild(tempTextArea);
@@ -183,7 +207,6 @@
             if (!isLocked || !lockedText.innerText) return;
 
             const element = document.createElement('div');
-            // Preserve line breaks for the PDF output
             element.innerHTML = `<div style="font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; padding: 40px; font-size: 20px; white-space: pre-wrap; word-wrap: break-word;">${lockedText.innerText}</div>`;
             
             const opt = {
@@ -196,9 +219,49 @@
 
             html2pdf().from(element).set(opt).save();
         });
-        
-        // Initialize Lucide icons
-        lucide.createIcons();
+
+        // --- Dark Mode Logic ---
+        function applyTheme(isDark) {
+            if (isDark) {
+                htmlElement.classList.add('dark');
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            } else {
+                htmlElement.classList.remove('dark');
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+            }
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            const isCurrentlyDark = htmlElement.classList.contains('dark');
+            localStorage.setItem('darkMode', !isCurrentlyDark);
+            applyTheme(!isCurrentlyDark);
+        });
+
+        // --- Initialize page ---
+        (() => {
+            // Check for saved theme
+            const savedMode = localStorage.getItem('darkMode');
+            if (savedMode !== null) {
+                applyTheme(savedMode === 'true');
+            } else {
+                // Otherwise, check system preference
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                applyTheme(prefersDark);
+            }
+
+            // Check for saved text
+            const savedText = localStorage.getItem('urduEditorText');
+            if (savedText) {
+                urduInput.value = savedText;
+                // Manually trigger the input event to update the counters
+                urduInput.dispatchEvent(new Event('input'));
+            }
+            
+            // Initialize Lucide icons
+            lucide.createIcons();
+        })();
     </script>
 
 </body>
