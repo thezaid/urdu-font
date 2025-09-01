@@ -41,20 +41,32 @@
         body, .bg-white, .bg-gray-50, .urdu-input, h1, p {
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
+        /* Custom scrollbar for better aesthetics */
+        #lockedText::-webkit-scrollbar, #urduInput::-webkit-scrollbar {
+            width: 8px;
+        }
+        #lockedText::-webkit-scrollbar-track, #urduInput::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #lockedText::-webkit-scrollbar-thumb, #urduInput::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 20px;
+            border: 3px solid transparent;
+        }
     </style>
 </head>
-<body class="flex items-start sm:items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
+<body class="flex items-start sm:items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-zinc-950">
 
     <div class="w-full max-w-2xl mx-auto h-[calc(var(--vh,1vh)*95)] sm:h-auto sm:max-h-[90vh]">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden h-full flex flex-col">
-            <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-lg overflow-hidden h-full flex flex-col">
+            <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-zinc-800 flex-shrink-0">
                 <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h1>
                 <p class="text-gray-500 dark:text-gray-400 text-center mt-2">Urdu Text Editor</p>
             </div>
 
             <div class="p-4 sm:p-6 flex-grow min-h-0">
                 <div id="editor-container" class="h-full flex flex-col">
-                    <textarea id="urduInput" class="urdu-input w-full p-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 rounded-lg border-2 border-transparent focus:border-blue-500 focus:ring-0 outline-none resize-none text-xl flex-grow"></textarea>
+                    <textarea id="urduInput" class="urdu-input w-full p-4 bg-gray-50 dark:bg-zinc-800 dark:text-gray-200 dark:placeholder-gray-400 rounded-lg border-2 border-transparent focus:border-blue-500 focus:ring-0 outline-none resize-none text-xl flex-grow" placeholder="یہاں لکھیں..."></textarea>
                     <!-- Character and Word Counter -->
                     <div id="text-stats" class="flex justify-end text-sm text-gray-500 dark:text-gray-400 mt-2 pr-1 urdu-text flex-shrink-0">
                         <span>الفاظ: 0</span>
@@ -63,28 +75,41 @@
                     </div>
                 </div>
                 <div id="viewer-container" class="hidden h-full">
-                    <div id="lockedText" class="urdu-text w-full h-full p-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-200 rounded-lg text-xl overflow-y-auto"></div>
+                    <div id="lockedText" class="urdu-text w-full h-full p-4 bg-gray-50 dark:bg-zinc-800 dark:text-gray-200 rounded-lg text-xl overflow-y-auto"></div>
                 </div>
             </div>
 
-            <div class="p-4 sm:p-6 bg-gray-50 dark:bg-gray-700 flex justify-center items-center gap-2 sm:gap-4 rounded-b-2xl flex-shrink-0">
-                <button id="darkModeToggle" title="Toggle Dark Mode" class="h-12 w-12 flex items-center justify-center bg-slate-400 dark:bg-gray-600 text-white rounded-full hover:bg-slate-500 dark:hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-slate-300 dark:focus:ring-gray-500 transition-all transform hover:scale-105">
-                    <i data-lucide="moon" id="moonIcon"></i>
-                    <i data-lucide="sun" id="sunIcon" class="hidden"></i>
-                </button>
-                <button id="toggleLockBtn" title="Lock/Edit" class="h-12 w-12 flex items-center justify-center bg-blue-300 text-blue-800 rounded-full hover:bg-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-200 transition-all transform hover:scale-105">
+            <div class="p-4 sm:p-6 bg-gray-50 dark:bg-zinc-800 flex flex-wrap justify-center items-center gap-2 sm:gap-4 rounded-b-2xl flex-shrink-0">
+                <!-- Main Actions -->
+                <button id="toggleLockBtn" title="Lock/Edit" class="h-12 w-12 flex items-center justify-center bg-rose-200 text-rose-800 rounded-full hover:bg-rose-300 focus:outline-none focus:ring-4 focus:ring-rose-100 transition-all transform hover:scale-105">
                     <i data-lucide="lock" id="lockIcon"></i>
                     <i data-lucide="pencil" id="editIcon" class="hidden"></i>
                 </button>
-                <button id="copyBtn" title="Copy Text" class="h-12 w-12 flex items-center justify-center bg-green-300 text-green-800 rounded-full hover:bg-green-400 focus:outline-none focus:ring-4 focus:ring-green-200 transition-all transform hover:scale-105 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none" disabled>
+                <button id="copyBtn" title="Copy Text" class="h-12 w-12 flex items-center justify-center bg-amber-200 text-amber-800 rounded-full hover:bg-amber-300 focus:outline-none focus:ring-4 focus:ring-amber-100 transition-all transform hover:scale-105 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none" disabled>
                     <i data-lucide="copy"></i>
                 </button>
-                <button id="printBtn" title="Save as PDF" class="h-12 w-12 flex items-center justify-center bg-red-300 text-red-800 rounded-full hover:bg-red-400 focus:outline-none focus:ring-4 focus:ring-red-200 transition-all transform hover:scale-105 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none" disabled>
-                     <i data-lucide="printer"></i>
+                <button id="printBtn" title="Save as PDF" class="h-12 w-12 flex items-center justify-center bg-sky-200 text-sky-800 rounded-full hover:bg-sky-300 focus:outline-none focus:ring-4 focus:ring-sky-100 transition-all transform hover:scale-105 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none" disabled>
+                     <i data-lucide="save"></i>
                 </button>
+                <button id="lineSpacingBtn" title="Change Line Spacing" class="h-12 w-12 flex items-center justify-center bg-emerald-200 text-emerald-800 rounded-full hover:bg-emerald-300 focus:outline-none focus:ring-4 focus:ring-emerald-100 transition-all transform hover:scale-105">
+                    <i data-lucide="pilcrow"></i>
+                </button>
+                <!-- Settings -->
+                <div class="w-full sm:w-auto flex justify-center items-center gap-2 sm:gap-4 mt-2 sm:mt-0">
+                    <button id="darkModeToggle" title="Toggle Dark Mode" class="h-12 w-12 flex items-center justify-center bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-white rounded-full hover:bg-slate-300 dark:hover:bg-zinc-600 focus:outline-none focus:ring-4 focus:ring-slate-100 dark:focus:ring-zinc-600 transition-all transform hover:scale-105">
+                        <i data-lucide="moon" id="moonIcon"></i>
+                        <i data-lucide="sun" id="sunIcon" class="hidden"></i>
+                    </button>
+                    <button id="decreaseFontBtn" title="Decrease Font Size" class="h-12 w-12 flex items-center justify-center bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-gray-200 rounded-full hover:bg-slate-300 dark:hover:bg-zinc-600 focus:outline-none focus:ring-4 focus:ring-slate-100 dark:focus:ring-zinc-600 transition-all transform hover:scale-105">
+                        <i data-lucide="zoom-out"></i>
+                    </button>
+                    <button id="increaseFontBtn" title="Increase Font Size" class="h-12 w-12 flex items-center justify-center bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-gray-200 rounded-full hover:bg-slate-300 dark:hover:bg-zinc-600 focus:outline-none focus:ring-4 focus:ring-slate-100 dark:focus:ring-zinc-600 transition-all transform hover:scale-105">
+                        <i data-lucide="zoom-in"></i>
+                    </button>
+                </div>
             </div>
             <!-- Animated Feedback Message -->
-            <div id="copy-feedback" class="text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-0"></div>
+            <div id="feedback-message" class="text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-0"></div>
         </div>
     </div>
 
@@ -101,26 +126,53 @@
         
         const copyBtn = document.getElementById('copyBtn');
         const printBtn = document.getElementById('printBtn');
-        const copyFeedback = document.getElementById('copy-feedback');
+        const lineSpacingBtn = document.getElementById('lineSpacingBtn');
+        const feedbackMessage = document.getElementById('feedback-message');
         const textStats = document.getElementById('text-stats');
         
         const htmlElement = document.documentElement;
         const darkModeToggle = document.getElementById('darkModeToggle');
         const moonIcon = document.getElementById('moonIcon');
         const sunIcon = document.getElementById('sunIcon');
+        const decreaseFontBtn = document.getElementById('decreaseFontBtn');
+        const increaseFontBtn = document.getElementById('increaseFontBtn');
 
         let isLocked = false;
+        let currentFontSize = 20; // Corresponds to text-xl
+        let currentLineHeightIndex = 2; // Default to '3'
+        const lineHeights = ['1.5', '2', '3', '4'];
 
-        // Update word and character count on input
-        urduInput.addEventListener('input', () => {
+        // --- Core Functions ---
+
+        function updateTextStats() {
             const text = urduInput.value;
             const chars = text.length;
             const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
             
             textStats.innerHTML = `<span>الفاظ: ${words}</span><span class="mx-2">|</span><span>حروف: ${chars}</span>`;
-        });
 
-        // Toggle between editing and locked view
+            // Save to local storage
+            localStorage.setItem('urduTextContent', text);
+        }
+
+        function applyFontSize(size) {
+            // Clamp font size between 12px and 48px
+            currentFontSize = Math.max(12, Math.min(size, 48));
+            urduInput.style.fontSize = `${currentFontSize}px`;
+            lockedText.style.fontSize = `${currentFontSize}px`;
+            localStorage.setItem('urduEditorFontSize', currentFontSize);
+        }
+
+        function applyLineHeight(height) {
+            urduInput.style.lineHeight = height;
+            lockedText.style.lineHeight = height;
+            localStorage.setItem('urduEditorLineHeight', height);
+        }
+
+        // --- Event Listeners ---
+
+        urduInput.addEventListener('input', updateTextStats);
+
         toggleLockBtn.addEventListener('click', () => {
             isLocked = !isLocked;
             const currentText = urduInput.value;
@@ -154,15 +206,20 @@
             }
         });
         
+        lineSpacingBtn.addEventListener('click', () => {
+            currentLineHeightIndex = (currentLineHeightIndex + 1) % lineHeights.length;
+            const newLineHeight = lineHeights[currentLineHeightIndex];
+            applyLineHeight(newLineHeight);
+        });
+        
         // --- Utility Functions ---
 
-        // Shows a feedback message that fades out
         function showFeedback(message, isError = false) {
-            copyFeedback.textContent = message;
-            copyFeedback.className = `text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-100 ${isError ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`;
+            feedbackMessage.textContent = message;
+            feedbackMessage.className = `text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-100 ${isError ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`;
             
             setTimeout(() => {
-                copyFeedback.classList.replace('opacity-100', 'opacity-0');
+                feedbackMessage.classList.replace('opacity-100', 'opacity-0');
             }, 2000);
         }
 
@@ -171,45 +228,61 @@
         copyBtn.addEventListener('click', () => {
             if (!isLocked || !lockedText.innerText) return;
             
+            // Use modern clipboard API if available
             if (navigator.clipboard) {
                  navigator.clipboard.writeText(lockedText.innerText).then(() => {
-                    showFeedback('متن کاپی ہو گیا!');
-                }).catch(err => {
-                    console.error('Failed to copy text with modern API: ', err);
-                    showFeedback('کاپی کرنے میں ناکامی!', true);
-                });
+                     showFeedback('متن کاپی ہو گیا!');
+                 }).catch(err => {
+                     console.error('Failed to copy text with modern API: ', err);
+                     // Fallback for iFrame restrictions
+                     fallbackCopy();
+                 });
             } else {
-                const tempTextArea = document.createElement('textarea');
-                tempTextArea.value = lockedText.innerText;
-                document.body.appendChild(tempTextArea);
-                tempTextArea.select();
-                try {
-                    document.execCommand('copy');
-                    showFeedback('متن کاپی ہو گیا!');
-                } catch (err) {
-                    console.error('Failed to copy text with fallback: ', err);
-                    showFeedback('کاپی کرنے میں ناکامی!', true);
-                }
-                document.body.removeChild(tempTextArea);
+                fallbackCopy();
             }
         });
+        
+        function fallbackCopy() {
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = lockedText.innerText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            try {
+                document.execCommand('copy');
+                showFeedback('متن کاپی ہو گیا!');
+            } catch (err) {
+                console.error('Failed to copy text with fallback: ', err);
+                showFeedback('کاپی کرنے میں ناکامی!', true);
+            }
+            document.body.removeChild(tempTextArea);
+        }
 
         printBtn.addEventListener('click', () => {
             if (!isLocked || !lockedText.innerText) return;
 
             const element = document.createElement('div');
+            // Use pre-wrap to preserve line breaks and spacing
             element.innerHTML = `<div style="font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; padding: 40px; font-size: 20px; white-space: pre-wrap; word-wrap: break-word;">${lockedText.innerText}</div>`;
             
             const opt = {
                 margin:       1,
                 filename:     'urdu-text.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
-            html2pdf().from(element).set(opt).save();
+            showFeedback('پی ڈی ایف تیار کی جا رہی ہے...');
+            html2pdf().from(element).set(opt).save().then(() => {
+                showFeedback('پی ڈی ایف محفوظ ہو گئی!');
+            }).catch(err => {
+                showFeedback('پی ڈی ایف بنانے میں ناکامی!', true);
+                console.error('PDF generation failed:', err);
+            });
         });
+        
+        increaseFontBtn.addEventListener('click', () => applyFontSize(currentFontSize + 2));
+        decreaseFontBtn.addEventListener('click', () => applyFontSize(currentFontSize - 2));
 
         // --- Dark Mode Logic ---
         function applyTheme(isDark) {
@@ -239,7 +312,7 @@
             window.addEventListener('resize', setVh);
             setVh(); // Set initial value
 
-            // Check for saved theme
+            // Load saved theme
             const savedMode = localStorage.getItem('darkMode');
             if (savedMode !== null) {
                 applyTheme(savedMode === 'true');
@@ -249,6 +322,36 @@
                 applyTheme(prefersDark);
             }
             
+            // Load saved text
+            const savedText = localStorage.getItem('urduTextContent');
+            if (savedText) {
+                urduInput.value = savedText;
+            }
+            
+            // Load saved font size
+            const savedFontSize = localStorage.getItem('urduEditorFontSize');
+            if (savedFontSize) {
+                applyFontSize(parseInt(savedFontSize, 10));
+            } else {
+                applyFontSize(20); // Default size
+            }
+
+            // Load saved line height
+            const savedLineHeight = localStorage.getItem('urduEditorLineHeight');
+            if (savedLineHeight && lineHeights.includes(savedLineHeight)) {
+                applyLineHeight(savedLineHeight);
+                const savedIndex = lineHeights.indexOf(savedLineHeight);
+                if (savedIndex !== -1) {
+                    currentLineHeightIndex = savedIndex;
+                }
+            } else {
+                // Apply default line height
+                applyLineHeight(lineHeights[currentLineHeightIndex]);
+            }
+
+            // Initial UI update
+            updateTextStats();
+            
             // Initialize Lucide icons
             lucide.createIcons();
         })();
@@ -256,4 +359,3 @@
 
 </body>
 </html>
-
