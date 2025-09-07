@@ -12,7 +12,14 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Urdu Text Editor</title>
+    <title>Urdu Text Editor</title>
+
+    <!-- PWA Manifest and Theme Color -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/ffffff/000000?text=Urdu">
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
@@ -60,8 +67,8 @@
     <div class="w-full max-w-2xl mx-auto h-[calc(var(--vh,1vh)*95)] sm:h-auto sm:max-h-[90vh]">
         <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-lg overflow-hidden h-full flex flex-col">
             <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-zinc-800 flex-shrink-0">
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h1>
-                <p class="text-gray-500 dark:text-gray-400 text-center mt-2">Urdu Text Editor</p>
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100 text-center urdu-text">اردو ٹیکسٹ ایڈیٹر</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 text-center mt-1">Urdu Text Editor</p>
             </div>
 
             <div class="p-4 sm:p-6 flex-grow min-h-0">
@@ -79,7 +86,8 @@
                 </div>
             </div>
 
-            <div class="p-4 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 flex justify-center items-center gap-2 rounded-b-2xl flex-shrink-0">
+            <div class="p-4 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 flex justify-center items-center flex-wrap gap-2 rounded-b-2xl flex-shrink-0">
+                <!-- Primary Actions -->
                 <button id="toggleLockBtn" title="Lock/Edit" class="h-10 w-10 flex items-center justify-center bg-rose-200 text-rose-800 rounded-full hover:bg-rose-300 focus:outline-none focus:ring-4 focus:ring-rose-100 transition-all transform hover:scale-105">
                     <i data-lucide="lock" id="lockIcon"></i>
                     <i data-lucide="pencil" id="editIcon" class="hidden"></i>
@@ -90,18 +98,23 @@
                 <button id="printBtn" title="Save as PDF" class="h-10 w-10 flex items-center justify-center bg-sky-200 text-sky-800 rounded-full hover:bg-sky-300 focus:outline-none focus:ring-4 focus:ring-sky-100 transition-all transform hover:scale-105 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none" disabled>
                      <i data-lucide="save"></i>
                 </button>
-                <button id="lineSpacingBtn" title="Change Line Spacing" class="h-10 w-10 flex items-center justify-center bg-emerald-200 text-emerald-800 rounded-full hover:bg-emerald-300 focus:outline-none focus:ring-4 focus:ring-emerald-100 transition-all transform hover:scale-105">
+                <button id="clearBtn" title="Clear All" class="h-10 w-10 flex items-center justify-center bg-violet-200 text-violet-800 rounded-full hover:bg-violet-300 focus:outline-none focus:ring-4 focus:ring-violet-100 transition-all transform hover:scale-105">
+                    <i data-lucide="trash-2"></i>
+                </button>
+                <div class="w-px h-8 bg-gray-200 dark:bg-zinc-700 mx-1"></div>
+                <!-- Formatting Actions -->
+                <button id="increaseFontBtn" title="Increase Font Size" class="h-10 w-10 flex items-center justify-center bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-gray-200 rounded-full hover:bg-slate-300 dark:hover:bg-zinc-600 focus:outline-none focus:ring-4 focus:ring-slate-100 dark:focus:ring-zinc-600 transition-all transform hover:scale-105">
+                    <i data-lucide="zoom-in"></i>
+                </button>
+                <button id="decreaseFontBtn" title="Decrease Font Size" class="h-10 w-10 flex items-center justify-center bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-gray-200 rounded-full hover:bg-slate-300 dark:hover:bg-zinc-600 focus:outline-none focus:ring-4 focus:ring-slate-100 dark:focus:ring-zinc-600 transition-all transform hover:scale-105">
+                    <i data-lucide="zoom-out"></i>
+                </button>
+                 <button id="lineSpacingBtn" title="Change Line Spacing" class="h-10 w-10 flex items-center justify-center bg-emerald-200 text-emerald-800 rounded-full hover:bg-emerald-300 focus:outline-none focus:ring-4 focus:ring-emerald-100 transition-all transform hover:scale-105">
                     <i data-lucide="pilcrow"></i>
                 </button>
                 <button id="darkModeToggle" title="Toggle Dark Mode" class="h-10 w-10 flex items-center justify-center bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-white rounded-full hover:bg-slate-300 dark:hover:bg-zinc-600 focus:outline-none focus:ring-4 focus:ring-slate-100 dark:focus:ring-zinc-600 transition-all transform hover:scale-105">
                     <i data-lucide="moon" id="moonIcon"></i>
                     <i data-lucide="sun" id="sunIcon" class="hidden"></i>
-                </button>
-                <button id="decreaseFontBtn" title="Decrease Font Size" class="h-10 w-10 flex items-center justify-center bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-gray-200 rounded-full hover:bg-slate-300 dark:hover:bg-zinc-600 focus:outline-none focus:ring-4 focus:ring-slate-100 dark:focus:ring-zinc-600 transition-all transform hover:scale-105">
-                    <i data-lucide="zoom-out"></i>
-                </button>
-                <button id="increaseFontBtn" title="Increase Font Size" class="h-10 w-10 flex items-center justify-center bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-gray-200 rounded-full hover:bg-slate-300 dark:hover:bg-zinc-600 focus:outline-none focus:ring-4 focus:ring-slate-100 dark:focus:ring-zinc-600 transition-all transform hover:scale-105">
-                    <i data-lucide="zoom-in"></i>
                 </button>
             </div>
             <!-- Animated Feedback Message -->
@@ -110,7 +123,7 @@
     </div>
 
     <script>
-        // DOM Elements
+        // --- DOM Elements ---
         const urduInput = document.getElementById('urduInput');
         const lockedText = document.getElementById('lockedText');
         const editorContainer = document.getElementById('editor-container');
@@ -122,6 +135,7 @@
         
         const copyBtn = document.getElementById('copyBtn');
         const printBtn = document.getElementById('printBtn');
+        const clearBtn = document.getElementById('clearBtn');
         const lineSpacingBtn = document.getElementById('lineSpacingBtn');
         const feedbackMessage = document.getElementById('feedback-message');
         const textStats = document.getElementById('text-stats');
@@ -133,6 +147,7 @@
         const decreaseFontBtn = document.getElementById('decreaseFontBtn');
         const increaseFontBtn = document.getElementById('increaseFontBtn');
 
+        // --- State ---
         let isLocked = false;
         let currentFontSize = 20; // Corresponds to text-xl
         let currentLineHeightIndex = 2; // Default to '3'
@@ -163,6 +178,30 @@
             urduInput.style.lineHeight = height;
             lockedText.style.lineHeight = height;
             localStorage.setItem('urduEditorLineHeight', height);
+        }
+
+        function showFeedback(message, isError = false) {
+            feedbackMessage.textContent = message;
+            feedbackMessage.className = `text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-100 ${isError ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`;
+            
+            setTimeout(() => {
+                feedbackMessage.classList.replace('opacity-100', 'opacity-0');
+            }, 2000);
+        }
+        
+        function fallbackCopy() {
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = lockedText.innerText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            try {
+                document.execCommand('copy');
+                showFeedback('متن کاپی ہو گیا!');
+            } catch (err) {
+                console.error('Failed to copy text with fallback: ', err);
+                showFeedback('کاپی کرنے میں ناکامی!', true);
+            }
+            document.body.removeChild(tempTextArea);
         }
 
         // --- Event Listeners ---
@@ -206,25 +245,12 @@
             currentLineHeightIndex = (currentLineHeightIndex + 1) % lineHeights.length;
             const newLineHeight = lineHeights[currentLineHeightIndex];
             applyLineHeight(newLineHeight);
+            showFeedback(`سطر کا فاصلہ: ${newLineHeight}`);
         });
-        
-        // --- Utility Functions ---
-
-        function showFeedback(message, isError = false) {
-            feedbackMessage.textContent = message;
-            feedbackMessage.className = `text-center text-sm p-2 h-8 transition-opacity duration-300 opacity-100 ${isError ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`;
-            
-            setTimeout(() => {
-                feedbackMessage.classList.replace('opacity-100', 'opacity-0');
-            }, 2000);
-        }
-
-        // --- Button Event Listeners ---
 
         copyBtn.addEventListener('click', () => {
             if (!isLocked || !lockedText.innerText) return;
             
-            // Use modern clipboard API if available
             if (navigator.clipboard) {
                  navigator.clipboard.writeText(lockedText.innerText).then(() => {
                      showFeedback('متن کاپی ہو گیا!');
@@ -237,21 +263,6 @@
                 fallbackCopy();
             }
         });
-        
-        function fallbackCopy() {
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = lockedText.innerText;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            try {
-                document.execCommand('copy');
-                showFeedback('متن کاپی ہو گیا!');
-            } catch (err) {
-                console.error('Failed to copy text with fallback: ', err);
-                showFeedback('کاپی کرنے میں ناکامی!', true);
-            }
-            document.body.removeChild(tempTextArea);
-        }
 
         printBtn.addEventListener('click', () => {
             if (!isLocked || !lockedText.innerText) return;
@@ -277,6 +288,15 @@
             });
         });
         
+        clearBtn.addEventListener('click', () => {
+            if (urduInput.value !== '') {
+                urduInput.value = '';
+                updateTextStats();
+                showFeedback('متن صاف کر دیا گیا');
+                urduInput.focus();
+            }
+        });
+        
         increaseFontBtn.addEventListener('click', () => applyFontSize(currentFontSize + 2));
         decreaseFontBtn.addEventListener('click', () => applyFontSize(currentFontSize - 2));
 
@@ -299,8 +319,19 @@
             applyTheme(!isCurrentlyDark);
         });
 
-        // --- Initialize page ---
+        // --- Initialize Page ---
         (() => {
+            // Register Service Worker for PWA
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('sw.js').then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }).catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+                });
+            }
+
             // Set dynamic viewport height to handle mobile keyboard
             const setVh = () => {
                 document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
@@ -355,6 +386,4 @@
 
 </body>
 </html>
-
-
 
