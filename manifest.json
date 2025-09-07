@@ -1,0 +1,23 @@
+{
+"name": "Urdu Text Editor",
+"short_name": "Urdu Editor",
+"description": "A modern, offline-capable text editor for writing in Urdu.",
+"start_url": ".",
+"display": "standalone",
+"background_color": "#f3f4f6",
+"theme_color": "#ffffff",
+"icons": [
+{
+"src": "https://www.google.com/search?q=https://placehold.co/192x192/8b5cf6/ffffff%3Ftext%3DUrdu",
+"type": "image/png",
+"sizes": "192x192",
+"purpose": "any maskable"
+},
+{
+"src": "https://www.google.com/search?q=https://placehold.co/512x512/8b5cf6/ffffff%3Ftext%3DUrdu",
+"type": "image/png",
+"sizes": "512x512",
+"purpose": "any maskable"
+}
+]
+}
